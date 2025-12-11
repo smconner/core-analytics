@@ -1,0 +1,29 @@
+# Credentials and secrets
+config/config.json
+*.env
+.env*
+
+# Keep example config
+!config/config.example.json
+
+# Logs
+logs/*.log
+server.log
+!logs/.gitkeep
+
+# Node modules
+node_modules/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python cache (if any scripts)
+__pycache__/
+*.py[cod]

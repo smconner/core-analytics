@@ -1,0 +1,37 @@
+{
+  "name": "vivocare-3ds-analytics",
+  "version": "1.0.2",
+  "description": "AI bot analytics platform for Vivocare 3 Domain Strategy",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "ingest": "node scripts/ingest-logs.js",
+    "backfill": "node scripts/backfill-historical-logs.js",
+    "analyze": "node scripts/analyze-behavior.js",
+    "journeys": "node scripts/aggregate-journeys.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "analytics",
+    "ai-bots",
+    "caddy",
+    "postgresql",
+    "geoip"
+  ],
+  "author": "",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@maxmind/geoip2-node": "^5.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^5.1.0",
+    "pg": "^8.13.1",
+    "winston": "^3.17.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

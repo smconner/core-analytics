@@ -1,0 +1,22 @@
+{
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "analytics",
+    "user": "analytics_user",
+    "password": "CHANGE_THIS_PASSWORD"
+  },
+  "geoip": {
+    "city_db": "/usr/share/GeoIP/GeoLite2-City.mmdb",
+    "asn_db": "/usr/share/GeoIP/GeoLite2-ASN.mmdb"
+  },
+  "ingestion": {
+    "batch_size": 100,
+    "log_retention_days": 90
+  },
+  "sites": [
+    "veteransmemorycare.org",
+    "memorycareguide.org",
+    "thaibelle.com"
+  ]
+}

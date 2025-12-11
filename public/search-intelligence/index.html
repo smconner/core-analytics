@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" href="data:,">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Intelligence Dashboard - Google AI Overview Monitoring</title>
+  <link rel="stylesheet" href="/components/header.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 40px;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .version {
+      color: #64748b;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .subtitle {
+      color: #94a3b8;
+      font-size: 1.1rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .nav-link {
+      color: #94a3b8;
+      text-decoration: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .nav-link:hover {
+      color: #10b981;
+      background: #1e293b;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .stat-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 24px;
+      transition: transform 0.2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-2px);
+      border-color: #475569;
+    }
+
+    .stat-card.alert {
+      border-color: #10b981;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+
+    .stat-card.warning {
+      border-color: #f59e0b;
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+    }
+
+    .stat-card.critical {
+      border-color: #ef4444;
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.3);
+    }
+
+    .stat-label {
+      color: #94a3b8;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .stat-change {
+      font-size: 0.875rem;
+      color: #10b981;
+    }
+
+    .chart-section {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 30px;
+    }
+
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .chart-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #cbd5e1;
+    }
+
+    .queries-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .query-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .query-text {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #10b981;
+      margin-bottom: 12px;
+    }
+
+    .query-meta {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .query-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      background: #334155;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      color: #94a3b8;
+    }
+
+    .query-badge.high {
+      background: #10b981;
+      color: #fff;
+    }
+
+    .query-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #334155;
+    }
+
+    .query-stat {
+      text-align: center;
+    }
+
+    .query-stat-label {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
+
+    .query-stat-value {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #e2e8f0;
+    }
+
+    .ai-overview-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .ai-overview-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 15px;
+    }
+
+    .ai-query {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #10b981;
+    }
+
+    .ai-date {
+      font-size: 0.875rem;
+      color: #64748b;
+    }
+
+    .ai-text {
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      padding: 15px;
+      background: #0f172a;
+      border-radius: 8px;
+      border-left: 3px solid #10b981;
+    }
+
+    .brand-mention {
+      display: inline-block;
+      padding: 2px 6px;
+      background: #10b981;
+      color: #fff;
+      border-radius: 4px;
+      font-weight: 600;
+      margin: 0 2px;
+    }
+
+    .citations {
+      margin-top: 15px;
+    }
+
+    .citations-title {
+      font-size: 0.875rem;
+      color: #94a3b8;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .citation {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: #0f172a;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+
+    .citation-pos {
+      font-weight: 700;
+      color: #10b981;
+      min-width: 30px;
+    }
+
+    .citation-info {
+      flex: 1;
+    }
+
+    .citation-domain {
+      font-size: 0.875rem;
+      color: #3b82f6;
+      font-weight: 600;
+    }
+
+    .citation-title {
+      font-size: 0.875rem;
+      color: #cbd5e1;
+      margin-top: 2px;
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #0f172a;
+    }
+
+    th {
+      padding: 12px;
+      text-align: left;
+      color: #94a3b8;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid #334155;
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid #334155;
+    }
+
+    tbody tr:hover {
+      background: #0f172a;
+    }
+
+    .domain-link {
+      color: #3b82f6;
+      text-decoration: none;
+    }
+
+    .domain-link:hover {
+      text-decoration: underline;
+    }
+
+    .opportunity-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .opportunity-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 12px;
+    }
+
+    .platform-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .platform-reddit {
+      background: #ff4500;
+      color: #fff;
+    }
+
+    .platform-quora {
+      background: #b92b27;
+      color: #fff;
+    }
+
+    .priority-high {
+      color: #ef4444;
+      font-weight: 700;
+    }
+
+    .opportunity-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
+
+    .opportunity-url {
+      color: #3b82f6;
+      font-size: 0.875rem;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .opportunity-snippet {
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-top: 12px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #64748b;
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+    }
+
+    .empty-state-text {
+      font-size: 1.2rem;
+    }
+
+    .last-updated {
+      color: #64748b;
+      font-size: 0.875rem;
+      text-align: right;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="header-top">
+        <h1>ModelZero Analytics</h1>
+        <span class="version">v1.3</span>
+      </div>
+      <p class="subtitle">Google AI Overview & SERP Monitoring</p>
+    </header>
+
+    <!-- Overview Stats -->
+    <div class="stats-grid" id="overview-stats">
+      <div class="stat-card">
+        <div class="stat-label">Total Searches</div>
+        <div class="stat-value" id="total-searches">--</div>
+        <div class="stat-change" id="queries-tracked">--</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">🤖 AI Overviews Found</div>
+        <div class="stat-value" id="ai-overviews">--</div>
+        <div class="stat-change" id="ai-percentage">--</div>
+      </div>
+
+      <div class="stat-card" id="thailand-card">
+        <div class="stat-label">🇹🇭 Thailand Mentions</div>
+        <div class="stat-value" id="thailand-mentions">--</div>
+        <div class="stat-change">In AI Overviews</div>
+      </div>
+
+      <div class="stat-card" id="vivocare-card">
+        <div class="stat-label">🏥 VivoCare Mentions</div>
+        <div class="stat-value" id="vivocare-mentions">--</div>
+        <div class="stat-change">In AI Overviews</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">💬 Platform Opportunities</div>
+        <div class="stat-value" id="opportunities">--</div>
+        <div class="stat-change">Reddit, Quora, etc.</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-label">📅 Last Search</div>
+        <div class="stat-value" id="last-search" style="font-size: 1.2rem;">--</div>
+        <div class="stat-change" id="first-search">--</div>
+      </div>
+    </div>
+
+    <!-- Tracked Queries -->
+    <div class="section-title">📊 Tracked Queries (10)</div>
+    <div class="queries-grid" id="queries-grid">
+      <!-- Populated by JavaScript -->
+    </div>
+
+    <!-- AI Overview Percentage Chart -->
+    <div class="chart-section">
+      <div class="chart-header">
+        <div class="chart-title">AI Overview Frequency by Query</div>
+      </div>
+      <canvas id="ai-frequency-chart" height="80"></canvas>
+    </div>
+
+    <!-- Recent AI Overviews -->
+    <div class="chart-section">
+      <div class="chart-header">
+        <div class="chart-title">Recent AI Overviews</div>
+      </div>
+      <div id="ai-overviews-list">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Top Cited Domains -->
+    <div class="chart-section">
+      <div class="chart-header">
+        <div class="chart-title">Top Cited Domains by Google AI</div>
+      </div>
+      <div class="table-container">
+        <table id="citations-table">
+          <thead>
+            <tr>
+              <th>Domain</th>
+              <th>Citations</th>
+              <th>Avg Position</th>
+              <th>In Organic Results</th>
+              <th>Avg Organic Rank</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Platform Opportunities -->
+    <div class="chart-section">
+      <div class="chart-header">
+        <div class="chart-title">Platform Engagement Opportunities</div>
+      </div>
+      <div id="opportunities-list">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+
+    <div class="last-updated" id="last-updated">--</div>
+  </div>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

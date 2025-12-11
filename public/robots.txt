@@ -1,0 +1,41 @@
+# Robots.txt for modelzero.com
+# Private analytics dashboard - no indexing allowed
+
+User-agent: *
+Disallow: /
+
+# Explicitly block all AI bots
+User-agent: GPT-Bot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: GoogleOther
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /
+
+User-agent: OAI-SearchBot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: YouBot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+# No sitemap - this is a private dashboard
