@@ -11,7 +11,7 @@
       background: #0f172a;
       color: #e2e8f0;
       padding: 40px;
-      max-width: 900px;
+      max-width: 1100px;
       margin: 0 auto;
     }
     h1 {
@@ -51,6 +51,24 @@
     .desc {
       color: #e2e8f0;
     }
+    .links {
+      white-space: nowrap;
+    }
+    .links a {
+      margin-right: 8px;
+    }
+    .local {
+      color: #4ade80;
+      font-size: 0.85em;
+    }
+    .remote {
+      color: #60a5fa;
+      font-size: 0.85em;
+    }
+    .sep {
+      color: #475569;
+      margin: 0 4px;
+    }
   </style>
 </head>
 <body>
@@ -58,25 +76,112 @@
 
   <h2>Dashboards</h2>
   <table>
-    <tr><td>1.</td><td><a href="/dashboard" target="_blank">Bot Analytics Dashboard</a></td><td class="desc">AI bot traffic analysis across 3-stage marketing funnel</td></tr>
-    <tr><td>2.</td><td><a href="/explore" target="_blank">Data Explorer</a></td><td class="desc">Natural language query interface for traffic analysis</td></tr>
-    <tr><td>3.</td><td><a href="/search-intelligence/" target="_blank">Search Intelligence</a></td><td class="desc">Google AI Overview & SERP monitoring</td></tr>
-    <tr><td>4.</td><td><a href="/reddit-detection/" target="_blank">Reddit Detection Dashboard</a></td><td class="desc">Reddit.com anti-bot detection monitoring</td></tr>
-    <tr><td>5.</td><td><a href="/reddit-detection/vpn" target="_blank">VPN Health Log</a></td><td class="desc">Torguard.net Shared VPN tracking</td></tr>
-    <tr><td>6.</td><td><a href="/reddit-detection/kanban/" target="_blank">Project Kanban Board</a></td><td class="desc">Multi-project task tracking with drag-and-drop</td></tr>
+    <tr>
+      <td>1.</td>
+      <td>Bot Analytics Dashboard</td>
+      <td class="links"><a href="http://localhost:3000/dashboard" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/dashboard" target="_blank" class="remote">remote</a></td>
+      <td class="desc">AI bot traffic analysis across 3-stage marketing funnel</td>
+    </tr>
+    <tr>
+      <td>2.</td>
+      <td>Data Explorer</td>
+      <td class="links"><a href="http://localhost:3000/explore" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/explore" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Natural language query interface for traffic analysis</td>
+    </tr>
+    <tr>
+      <td>3.</td>
+      <td>Search Intelligence</td>
+      <td class="links"><a href="http://localhost:8766/" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/search-intelligence/" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Google AI Overview & SERP monitoring</td>
+    </tr>
+    <tr>
+      <td>4.</td>
+      <td>Reddit Detection Dashboard</td>
+      <td class="links"><a href="http://localhost:8765/" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/reddit-detection/" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Reddit.com anti-bot detection monitoring</td>
+    </tr>
+    <tr>
+      <td>5.</td>
+      <td>VPN Health Log</td>
+      <td class="links"><a href="http://localhost:8765/vpn" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/reddit-detection/vpn" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Torguard.net Shared VPN tracking</td>
+    </tr>
+    <tr>
+      <td>6.</td>
+      <td>Gmail Health Log</td>
+      <td class="links"><a href="http://localhost:8765/gmail" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/reddit-detection/gmail" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Gmail account health monitoring for Reddit signups</td>
+    </tr>
+    <tr>
+      <td>7.</td>
+      <td>Reddit Health Log</td>
+      <td class="links"><a href="http://localhost:8765/reddit" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/reddit-detection/reddit" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Reddit account shadowban and health monitoring</td>
+    </tr>
+    <tr>
+      <td>8.</td>
+      <td>Project Kanban Board</td>
+      <td class="links"><a href="http://localhost:8765/kanban/" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/reddit-detection/kanban/" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Multi-project task tracking with drag-and-drop</td>
+    </tr>
   </table>
 
   <h2>Recording Tools</h2>
   <table>
-    <tr><td>7.</td><td><a href="/recording/html/reddit_clone.html" target="_blank">Reddit Clone Simulator</a></td><td class="desc">Reddit.com anti-bot detection playback and refinement tool</td></tr>
-    <tr><td>8.</td><td><a href="/recording/html/reddit_login_recording.html" target="_blank">Reddit Login Recorder</a></td><td class="desc">Google enterprise captcha bypass for Reddit.com login</td></tr>
-    <tr><td>9.</td><td><a href="/recording/html/mouse_zone_recorder.html" target="_blank">Mouse Zone Recorder</a></td><td class="desc">Reddit.com anti-bot detection for mouse movements (macro)</td></tr>
-    <tr><td>10.</td><td><a href="/recording/html/mouse_subzone_recorder.html" target="_blank">Mouse Sub-Zone Recorder</a></td><td class="desc">Reddit.com anti-bot detection for mouse movements (medium)</td></tr>
-    <tr><td>11.</td><td><a href="/recording/html/mouse_micro_recorder.html" target="_blank">Mouse Micro Recorder</a></td><td class="desc">Reddit.com anti-bot detection for mouse movements (micro)</td></tr>
-    <tr><td>12.</td><td><a href="/recording/html/scroll_behavior_recorder.html" target="_blank">Scroll Behavior Recorder</a></td><td class="desc">Reddit.com anti-bot detection for scrolling actions (mousewheel)</td></tr>
-    <tr><td>13.</td><td><a href="/recording/html/cloudflare_click_recorder.html" target="_blank">Cloudflare Click Recorder</a></td><td class="desc">CloudFlare turnstile captcha bypass for torguard.net</td></tr>
-    <tr><td>14.</td><td><a href="/recording/html/digraph_typing_demo.html" target="_blank">Digraph + Trigraph Typing Demo</a></td><td class="desc">Context-aware keystroke timing (2,246 digraphs + 15,147 trigraphs from 169K participants)</td></tr>
-    <tr><td>15.</td><td><a href="/recording/html/mouse_click_recorder.html" target="_blank">Mouse Click Duration Recorder</a></td><td class="desc">Record mouse click hold times for human-like click simulation (target: 1000 samples)</td></tr>
+    <tr>
+      <td>9.</td>
+      <td>Reddit Clone Simulator</td>
+      <td class="links"><a href="http://localhost:8765/static/../recording/html/reddit_clone.html" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/recording/html/reddit_clone.html" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Reddit.com anti-bot detection playback and refinement tool</td>
+    </tr>
+    <tr>
+      <td>10.</td>
+      <td>Reddit Login Recorder</td>
+      <td class="links"><a href="http://localhost:8765/static/../recording/html/reddit_login_recording.html" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/recording/html/reddit_login_recording.html" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Google enterprise captcha bypass for Reddit.com login</td>
+    </tr>
+    <tr>
+      <td>11.</td>
+      <td>Mouse Zone Recorder</td>
+      <td class="links"><a href="http://localhost:8765/static/../recording/html/mouse_zone_recorder.html" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/recording/html/mouse_zone_recorder.html" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Reddit.com anti-bot detection for mouse movements (macro)</td>
+    </tr>
+    <tr>
+      <td>12.</td>
+      <td>Mouse Sub-Zone Recorder</td>
+      <td class="links"><a href="http://localhost:8765/static/../recording/html/mouse_subzone_recorder.html" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/recording/html/mouse_subzone_recorder.html" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Reddit.com anti-bot detection for mouse movements (medium)</td>
+    </tr>
+    <tr>
+      <td>13.</td>
+      <td>Mouse Micro Recorder</td>
+      <td class="links"><a href="http://localhost:8765/static/../recording/html/mouse_micro_recorder.html" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/recording/html/mouse_micro_recorder.html" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Reddit.com anti-bot detection for mouse movements (micro)</td>
+    </tr>
+    <tr>
+      <td>14.</td>
+      <td>Scroll Behavior Recorder</td>
+      <td class="links"><a href="http://localhost:8765/static/../recording/html/scroll_behavior_recorder.html" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/recording/html/scroll_behavior_recorder.html" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Reddit.com anti-bot detection for scrolling actions (mousewheel)</td>
+    </tr>
+    <tr>
+      <td>15.</td>
+      <td>Cloudflare Click Recorder</td>
+      <td class="links"><a href="http://localhost:8765/static/../recording/html/cloudflare_click_recorder.html" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/recording/html/cloudflare_click_recorder.html" target="_blank" class="remote">remote</a></td>
+      <td class="desc">CloudFlare turnstile captcha bypass for torguard.net</td>
+    </tr>
+    <tr>
+      <td>16.</td>
+      <td>Digraph + Trigraph Typing Demo</td>
+      <td class="links"><a href="http://localhost:8765/static/../recording/html/digraph_typing_demo.html" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/recording/html/digraph_typing_demo.html" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Context-aware keystroke timing (2,246 digraphs + 15,147 trigraphs from 169K participants)</td>
+    </tr>
+    <tr>
+      <td>17.</td>
+      <td>Mouse Click Duration Recorder</td>
+      <td class="links"><a href="http://localhost:8765/static/../recording/html/mouse_click_recorder.html" target="_blank" class="local">local</a><span class="sep">|</span><a href="https://modelzero.com/recording/html/mouse_click_recorder.html" target="_blank" class="remote">remote</a></td>
+      <td class="desc">Record mouse click hold times for human-like click simulation (target: 1000 samples)</td>
+    </tr>
   </table>
 </body>
 </html>

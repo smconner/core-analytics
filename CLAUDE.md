@@ -1,99 +1,47 @@
-# Core Analytics
+CORE ANALYTICS - AI bot behavior tracking for ModelZero marketing funnel
 
-AI bot behavior tracking and analytics platform for the ModelZero marketing funnel.
+SERVICE
+$ pkill -f "/var/www/modelzero.com/core-analytics/server.js"   # restart (systemd auto-restarts)
+$ systemctl status modelzero.service
+$ journalctl -u modelzero.service -f
+$ tail -f logs/server.log
+CRITICAL: Never pkill -9 node (kills VS Code server)
 
-## Service Management
+STRUCTURE
+config/config.json - DB + GeoIP config (gitignored), see config.example.json
+lib/db.js - PostgreSQL connection
+lib/ai-classifier.js - bot detection logic
+lib/asn-lookup.js - datacenter detection
+lib/geoip.js - GeoIP lookups
+scripts/ingest-logs.js - main log ingestion
+public/ - dashboard frontend (index.html, explore.html, search-intelligence/)
+server.js - Express API (port 3000)
 
-```bash
-# Restart (preferred - systemd auto-restarts)
-pkill -f "/var/www/modelzero.com/server.js"
+DATABASE (PostgreSQL analytics)
+events - raw HTTP requests with bot classification
+behavior_patterns - level 3 behavioral detection
+journeys - cross-site visitor journeys
+ingestion_state - ingestion progress tracking
 
-# Status & logs
-systemctl status modelzero.service
-journalctl -u modelzero.service -f
-tail -f logs/server.log
-```
+API
+GET /api/stats?range=24h - traffic statistics
+GET /api/timeline?range=24h - time series
+GET /api/bot-classification - bot breakdown
+GET /api/top-bots?range=24h - top bots by volume
+GET /api/dashboard?range=24h - full dashboard data
+GET /api/search/* - proxied to search-intelligence:3002
 
-**CRITICAL:** Never use `pkill -9 node` - kills VS Code server. Use path-specific kills.
+BOT DETECTION LEVELS
+L1: User-Agent (GPTBot, ClaudeBot, Googlebot)
+L2: Datacenter IP (Azure, AWS, GCP ASN ranges)
+L3: Behavioral (rapid sequential, cross-site patterns)
 
-## Architecture
+INGESTION
+$ node scripts/ingest-logs.js                    # run once
+Cron: */10 * * * * cd /var/www/modelzero.com/core-analytics && node scripts/ingest-logs.js
 
-```
-core-analytics/
-├── config/
-│   ├── config.json           # DB + GeoIP config (gitignored)
-│   └── config.example.json   # Template
-├── lib/
-│   ├── db.js                 # PostgreSQL connection
-│   ├── ai-classifier.js      # Bot detection logic
-│   ├── asn-lookup.js         # Datacenter detection
-│   └── geoip.js              # GeoIP lookups
-├── scripts/                   # Data pipeline scripts
-│   └── ingest-logs.js        # Main log ingestion
-├── public/                    # Dashboard frontend
-│   ├── index.html            # Main dashboard
-│   ├── explore.html          # Data explorer
-│   └── search-intelligence/  # Search monitoring UI
-└── server.js                  # Express API server (port 3000)
-```
+CONFIG SETUP
+$ cp config/config.example.json config/config.json
+Required: database.*, geoip.city_db, geoip.asn_db, sites
 
-## Database
-
-PostgreSQL `analytics` database. Key tables:
-
-| Table | Purpose |
-|-------|---------|
-| events | Raw HTTP requests with bot classification |
-| behavior_patterns | Level 3 behavioral detection |
-| journeys | Cross-site visitor journeys |
-| ingestion_state | Ingestion progress tracking |
-
-## API Endpoints
-
-```
-GET /api/stats?range=24h          # Traffic statistics
-GET /api/timeline?range=24h       # Time series data
-GET /api/bot-classification       # Bot breakdown
-GET /api/top-bots?range=24h       # Top bots by volume
-GET /api/dashboard?range=24h      # Full dashboard data
-GET /api/search/*                 # Proxied to search-intelligence:3002
-```
-
-## Bot Detection Levels
-
-| Level | Method | Examples |
-|-------|--------|----------|
-| 1 | User-Agent | GPTBot, ClaudeBot, Googlebot |
-| 2 | Datacenter IP | Azure, AWS, GCP ASN ranges |
-| 3 | Behavioral | Rapid sequential, cross-site patterns |
-
-## Log Ingestion
-
-```bash
-# Run once
-node scripts/ingest-logs.js
-
-# Via cron (every 10 minutes)
-*/10 * * * * cd /var/www/modelzero.com/core-analytics && node scripts/ingest-logs.js
-```
-
-## Configuration
-
-Copy example and fill in values:
-```bash
-cp config/config.example.json config/config.json
-```
-
-Required fields:
-- `database.*` - PostgreSQL connection
-- `geoip.city_db` - Path to GeoLite2-City.mmdb
-- `geoip.asn_db` - Path to GeoLite2-ASN.mmdb
-- `sites` - Domains to track
-
-## Tech Stack
-
-- Node.js 18+
-- PostgreSQL 14+
-- Express.js
-- Chart.js (frontend)
-- MaxMind GeoIP
+STACK: Node.js 18+, PostgreSQL 14+, Express.js, Chart.js, MaxMind GeoIP
